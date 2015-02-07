@@ -1,0 +1,73 @@
+export HISTSIZE=1000000
+export SHELL=$(which bash)
+export EDITOR=fj
+export VISUAL=$EDITOR
+export PAGER=$(which less)
+export TERM=xterm-256color
+export INPUTRC=$home/.inputrc
+
+### Go
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/.go
+export GOBIN=$GOPATH/bin
+
+### Java
+export SCALA_HOME=/usr/local/scala-2.11.4/
+export GRADLE_HOME=/usr/local/gradle
+export ANDROID_HOME=/home/ben/hack/android/android-sdk-linux
+export GTK_IM_MODULE="xim" # Make GTK use my ~/.XCompose
+export XDG_CONFIG_HOME=$HOME/.config
+export XDG_DATA_HOME=$HOME/.share
+export XDG_CACHE_HOME=$HOME/tmp/cache
+export CLOJURESCRIPT_HOME=$HOME/hack/clojurescript
+
+### PATH
+export PATH=$GOROOT/bin:$PATH
+export PATH=/opt/ghc/7.8.3/bin:/opt/cabal/1.20/bin:$PATH
+export PATH=$ANDROID_HOME/tools:$PATH
+export PATH=/home/ben/.gem/ruby/2.1.0/bin:$PATH
+export PATH=/home/ben/hack/fay/.cabal-sandbox/bin:$PATH
+export PATH=$HOME/bin:$HOME/.bin:$PATH
+export PATH=$HOME/.hstools/.cabal-sandbox/bin:$HOME/.cabal/bin:$HOME/repo/dotfiles/bin:$PATH
+export PATH=$PATH:$HOME/npm/bin
+export PATH=/usr/local/Elm-Platform/0.13/bin:$PATH
+export PATH=/usr/local/gradle/bin:$PATH
+export PATH=/usr/local/heroku/bin:$PATH
+export PATH=/usr/local/scala-2.11.4/bin:$PATH
+export PATH=$GOBIN:$PATH
+
+### Bash
+case $(expr $RANDOM % 9) in
+ 0) export PS1="∀";;
+ 1) export PS1="∃";;
+ 2) export PS1="█";;
+ 3) export PS1="λ";;
+ 4) export PS1="◣";;
+ 5) export PS1="░";;
+ 6) export PS1="▞";;
+ 7) export PS1="▻";;
+ *) export PS1="◗";;
+esac
+
+alias vim=fj
+alias :a=A
+alias :e=v
+alias .=pwd
+alias ..="cd ..; pwd"
+alias ...="cd ../..; pwd"
+alias ....="cd ../../..; pwd"
+alias .....="cd ../../../..; pwd"
+
+l () { git ls-files | sort -u | column; }
+ll () { git ls-files | sed 's|.*/||' | sort -u | column; }
+s () { (git ls-files; find . -type f) | grep "$1" | sed 1q; }
+ss () { for n in $*; do git ls-files | grep "$n"; done | sort -u | uniq; }
+v () {
+	f=$(for name in $*; do
+		if [ -e "$name" ]; then echo $name; else s "$name"; fi
+		done);
+	(cd $(dirname $f); $EDITOR $(basename $f)); }
+
+vv () { $EDITOR $(for n in $*; do git ls-files | grep "$n"; done | sort -u | uniq); }
+
+set -o vi

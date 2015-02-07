@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+buildimg=''
+[ -n "$img" ] && buildimg=yes
+[ -n "$img" ] || img=dev3
+[ -n "$work" ] || work=$HOME/sg/srclib-haskell
+
+[ -n "$buildimg" ] || {
+  docker build -t $img .
+  echo DONE REBUILDING $img
+  }
+
+docker run -v "$HOME/.bash_history:/home/user/.bash_history" \
+           -v "$work:/home/user/work" \
+           -v "$HOME/scratch:/home/user/scratch" \
+           -i -t "$img"
