@@ -4,13 +4,19 @@ stdenv.mkDerivation {
   name = "bendev";
   builder = ./build.sh;
   src = ./.;
+
   buildInputs = [
 
     # Fundamentals
-    wget git tmux screen discount w3m gnumake
+    curl discount gitAndTools.gitFull gnugrep gnumake gnused gnutar gzip
+    jq less mercurial screen silver-searcher tmux vim w3m wget
+
+    # Go Tools
+    go
 
     # Haskell Tools
     haskellPackages.stylishHaskell haskellPackages.ghcPlain
+    haskellPackages.hlint haskellPackages.hoogle
 
   ];
 }
