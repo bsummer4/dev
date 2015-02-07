@@ -4,5 +4,13 @@ stdenv.mkDerivation {
   name = "bendev";
   builder = ./build.sh;
   src = ./.;
-  inherit wget git tmux screen;
+  buildInputs = [
+
+    # Fundamentals
+    wget git tmux screen discount w3m gnumake
+
+    # Haskell Tools
+    haskellPackages.stylishHaskell haskellPackages.ghcPlain
+
+  ];
 }
