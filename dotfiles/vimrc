@@ -1,1 +1,189 @@
-/home/ben/repo/dotfiles/vimrc
+" Misc Options
+  set guiheadroom=0
+  set guioptions-=M
+  set guioptions-=m
+  set guioptions-=T
+  set ts=2
+  filetype off
+  filetype plugin indent off
+  set background=dark
+  set fileformat=unix
+  set history=1
+  set hls
+  set is
+  set modeline
+  set more
+  set noexpandtab
+  set shiftwidth=1
+  set synmaxcol=100
+  set textwidth=0
+  set nowrap
+  set wildignore+=*.pyc,*.so
+  let g:ctrlp_working_path_mode = 0
+  let g:gitgutter_enabled = 1
+  let g:gitgutter_realtime = 0
+  let g:gitgutter_eager = 0
+  let g:gitgutter_highlight_lines = 0
+  let g:gitgutter_sign_column_always = 1
+
+function MyColors()
+  " Define Syntax Patterns
+  syn match TooLong '\%>80v.\+' containedin=ALL
+  syn match Tabs /\t/ containedin=ALL
+  syn match Junk /\s*$/ containedin=ALL
+  " syn match Spaces /^\t*\( *\)/ containedin=ALL
+  syn match Punc /[^a-zA-Z0-9]/
+  syn match Match /[[{(<«‹‘“';"”’›»>)}\]]/
+  syn match Capital /[A-Z]/ containedin=ALL
+  " Setup Colors
+    set t_Co=256
+    hi clear
+    hi TooLong guibg=DarkGray ctermbg=DarkGray
+    hi Tabs guibg=Black ctermbg=Black
+    hi Spaces guibg=DarkGray ctermbg=DarkGray
+    hi Junk guibg=Red ctermbg=Brown
+    " hi Punc guifg=Blue ctermfg=Blue cterm=bold gui=bold
+    hi Punc guifg=Red ctermfg=Red cterm=bold gui=bold
+    hi Match guifg=Yellow ctermfg=Yellow cterm=bold gui=bold
+    hi Capital gui=bold cterm=bold
+    hi LineNr guifg=DarkGrey ctermfg=DarkGrey
+    hi SpellBad ctermbg=Gray gui=italic
+    hi Normal guifg=white guibg=black
+    hi SignColumn ctermfg=Black ctermbg=Gray cterm=bold
+    hi GitGutterAdd ctermfg=Black ctermbg=Gray cterm=bold
+    hi GitGutterChange ctermfg=Black ctermbg=Gray cterm=bold
+    hi GitGutterDelete ctermfg=Black ctermbg=Gray cterm=bold
+    hi GitGutterChangeDelete ctermfg=Black ctermbg=Gray cterm=bold
+    endfunction
+
+" Move by indent
+  " TODO Possibly implement wrap-around.
+  function IndentLvl(n)
+    return strdisplaywidth(matchstr(getline(a:n), '\(\s*\)'))
+    endfunction
+
+  function NextDent(dir)
+    if(a:dir == 'u' || a:dir == 'l')
+      let offset = -1
+      endif
+    if(a:dir == 'd' || a:dir == 'r')
+      let offset = 1
+      endif
+    let start = line('.')
+    let curi = IndentLvl(start)
+    let lnu = start
+    while(lnu+offset > 0 && lnu+offset <= line('$'))
+      let lnu = lnu + offset
+      let li = IndentLvl(lnu)
+
+      " Skip blank lines.
+      if -1 != match(getline(lnu), '^\s*$')
+        continue
+        endif
+
+      " Up and down.
+      if a:dir == 'd' || a:dir == 'u'
+        if li < curi
+          break
+          endif
+        if (li == curi)
+          return lnu
+          endif
+        endif
+
+      " In and out.
+      if (a:dir == 'l' && li < curi)
+        return lnu
+        endif
+      if (a:dir == 'r' && li < curi)
+        break
+        endif
+      if (a:dir == 'r' && li > curi)
+        return lnu
+        endif
+      endwhile
+    return start
+    endfunction
+
+  function Dentmove(dir)
+    call cursor(NextDent(a:dir),1)
+    endfunction
+
+" Move the screen around like with less.
+  function ScrollMode()
+    let g:scrollfix = 0
+    source ~/scrollfix.vim
+    endfunction
+
+" File Browsing
+  let browseprg = '/home/ben/.scripts/wi'
+  function Browse (prg)
+    let oldkwd = &iskeyword
+    let oldkp = &keywordprg
+    let &iskeyword = '@,48-57,_,-,.,/,128-167,224-235'
+    let &keywordprg = a:prg
+    normal K
+    let &iskeyword = oldkwd
+    let &keywordprg = oldkp
+    endfunction
+
+" Tabs and spaces.
+  function ToTabs ()
+    let l:winview = winsaveview()
+    :silent %!unexpand2
+    call winrestview(l:winview)
+    endfunction
+  function ToSpaces ()
+    let l:winview = winsaveview()
+    :silent %!expand -t2
+    call winrestview(l:winview)
+    endfunction
+
+" Editing Files Indented with Spaces
+  let tabFacade = 0
+  function TabFacadePreWriteHook()
+    if g:tabFacade
+      call ToSpaces()
+      endif
+    endfunction
+
+  function TabFacadePostWriteHook()
+    if g:tabFacade
+      :GitGutter
+      call ToTabs()
+      endif
+    endfunction
+
+  function ToggleTabFacade()
+    if g:tabFacade
+      call ToSpaces()
+      let g:tabFacade = 0
+    else
+      :GitGutter
+      :GitGutterEnable
+      call ToTabs()
+      let g:tabFacade = 1
+    endif
+    endfunction
+  autocmd BufWritePre * :call TabFacadePreWriteHook()
+  autocmd BufWritePost * :call TabFacadePostWriteHook()
+
+" Custom Digraphs
+digraph >> 8921
+digraph << 8920
+digraph O+ 8853
+
+" Remap keys
+  map <C-k> :call Dentmove('u')<CR>^
+  map <C-j> :call Dentmove('d')<CR>^
+  map <C-h> :call Dentmove('l')<CR>^
+  map <C-l> :call Dentmove('r')<CR>^
+  nnoremap <F1> :call Browse('man')<CR>
+  nnoremap <F2> :w<CR>
+  nnoremap <F3> :call Browse(browseprg)<CR>
+  nnoremap <F4> :call ToggleTabFacade()<CR>
+  nnoremap <F6> :call ToTabs()<CR>
+  nnoremap <F7> :call ToSpaces()<CR>
+
+" TODO Fix no syntax on commands like, nNe.
+autocmd BufEnter * call MyColors()
