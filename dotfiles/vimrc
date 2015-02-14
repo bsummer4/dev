@@ -7,6 +7,7 @@
   filetype off
   filetype plugin indent off
   set background=dark
+  set backspace=eol,start
   set fileformat=unix
   set history=1
   set hls
@@ -14,10 +15,10 @@
   set modeline
   set more
   set noexpandtab
-  set shiftwidth=1
+  set nowrap
+  set shiftwidth=2
   set synmaxcol=100
   set textwidth=0
-  set nowrap
   set wildignore+=*.pyc,*.so
   let g:ctrlp_working_path_mode = 0
   let g:gitgutter_enabled = 1
@@ -42,13 +43,12 @@ function MyColors()
     hi Tabs guibg=Black ctermbg=Black
     hi Spaces guibg=DarkGray ctermbg=DarkGray
     hi Junk guibg=Red ctermbg=Brown
-    " hi Punc guifg=Blue ctermfg=Blue cterm=bold gui=bold
     hi Punc guifg=Red ctermfg=Red cterm=bold gui=bold
     hi Match guifg=Yellow ctermfg=Yellow cterm=bold gui=bold
-    hi Capital gui=bold cterm=bold
+    hi Capital gui=bold cterm=bold ctermfg=LightGreen guifg=LightGreen
     hi LineNr guifg=DarkGrey ctermfg=DarkGrey
     hi SpellBad ctermbg=Gray gui=italic
-    hi Normal guifg=white guibg=black
+    hi Normal ctermfg=Green guifg=white guibg=black
     hi SignColumn ctermfg=Black ctermbg=Gray cterm=bold
     hi GitGutterAdd ctermfg=Black ctermbg=Gray cterm=bold
     hi GitGutterChange ctermfg=Black ctermbg=Gray cterm=bold
