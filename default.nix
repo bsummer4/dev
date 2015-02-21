@@ -10,7 +10,7 @@ stdenv.mkDerivation {
     # Fundamentals
     curl discount gitAndTools.gitFull gnugrep gnumake gnused gnutar gzip
     jq less util-linux-curses mercurial screen silver-searcher tmux vim
-    w3m wget
+    w3m wget psmisc
 
     # Go Tools
     go
