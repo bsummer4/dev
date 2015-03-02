@@ -19,26 +19,5 @@ I've tried a ton of different approaches in the past: custom linux live
 cds, shell scripts that reformat my entire home directory, using aufs union
 files system as my home directory to make direct changes to configuration
 files temporary, developing from inside of a Docker container. All of
-these approaches ended up being a huge hassle. I'm hoping that I nix will
-solve all of my problems.
-
-## Usage
-
-To install the Nix package manager:
-
-    make install-nix
-
-
-To install dev tools including scripts to setup a new home directory:
-
-    make install
-
-
-To run test build:
-
-    make build
-
-
-To enter a virtual enironment with only these tools available:
-
-    make enter
+these approaches ended up being a huge hassle. I'm hoping that I nixos will
+solve all of these problems.
