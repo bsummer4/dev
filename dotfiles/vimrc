@@ -7,7 +7,6 @@
   filetype off
   filetype plugin indent off
   set background=dark
-  set backspace=eol,start
   set fileformat=unix
   set history=1
   set hls
@@ -15,10 +14,10 @@
   set modeline
   set more
   set noexpandtab
-  set nowrap
   set shiftwidth=2
   set synmaxcol=100
   set textwidth=0
+  set nowrap
   set wildignore+=*.pyc,*.so
   let g:ctrlp_working_path_mode = 0
   let g:gitgutter_enabled = 1
@@ -26,6 +25,7 @@
   let g:gitgutter_eager = 0
   let g:gitgutter_highlight_lines = 0
   let g:gitgutter_sign_column_always = 1
+  set backspace=eol,start
 
 function MyColors()
   " Define Syntax Patterns

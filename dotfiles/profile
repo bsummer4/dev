@@ -1,10 +1,10 @@
 export HISTSIZE=1000000
 export SHELL=$(which bash)
-export EDITOR=fj
+export EDITOR=$(which vim)
 export VISUAL=$EDITOR
 export PAGER=$(which less)
 export TERM=xterm-256color
-export INPUTRC=$home/.inputrc
+export INPUTRC=$HOME/.inputrc
 
 ### Go
 export GOROOT=/usr/local/go
@@ -27,7 +27,7 @@ export PATH=/opt/ghc/7.8.3/bin:/opt/cabal/1.20/bin:$PATH
 export PATH=$ANDROID_HOME/tools:$PATH
 export PATH=/home/ben/.gem/ruby/2.1.0/bin:$PATH
 export PATH=/home/ben/hack/fay/.cabal-sandbox/bin:$PATH
-export PATH=$HOME/bin:$HOME/.bin:$PATH
+export PATH=$HOME/dev/bin:$HOME/bin:$HOME/.bin:$PATH
 export PATH=$HOME/.hstools/.cabal-sandbox/bin:$HOME/.cabal/bin:$HOME/repo/dotfiles/bin:$PATH
 export PATH=$PATH:$HOME/npm/bin
 export PATH=/usr/local/Elm-Platform/0.13/bin:$PATH
@@ -49,7 +49,7 @@ case $(expr $RANDOM % 9) in
  *) export PS1="◗";;
 esac
 
-alias vim=fj
+# alias vim=fj
 alias :a=A
 alias :e=v
 alias .=pwd
@@ -58,16 +58,16 @@ alias ...="cd ../..; pwd"
 alias ....="cd ../../..; pwd"
 alias .....="cd ../../../..; pwd"
 
-l () { git ls-files | sort -u | column; }
-ll () { git ls-files | sed 's|.*/||' | sort -u | column; }
-s () { (git ls-files; find . -type f) | grep "$1" | sed 1q; }
-ss () { for n in $*; do git ls-files | grep "$n"; done | sort -u | uniq; }
-v () {
+function l { git ls-files | sort -u | column; }
+function ll { git ls-files | sed 's|.*/||' | sort -u | column; }
+function s { (git ls-files; find . -type f) | grep "$1" | sed 1q; }
+function ss { for n in $*; do git ls-files | grep "$n"; done | sort -u | uniq; }
+function v {
 	f=$(for name in $*; do
 		if [ -e "$name" ]; then echo $name; else s "$name"; fi
 		done);
-	(cd $(dirname $f); $EDITOR $(basename $f)); }
+	(cd $(dirname $f); $EDITOR $(basename $f) && touch $(basename f)); }
 
-vv () { $EDITOR $(for n in $*; do git ls-files | grep "$n"; done | sort -u | uniq); }
+function vv { $EDITOR $(for n in $*; do git ls-files | grep "$n"; done | sort -u | uniq); }
 
 set -o vi
