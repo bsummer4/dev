@@ -21,7 +21,7 @@
 
   environment.systemPackages = with pkgs; [
     # Basics
-    curl gitAndTools.gitFull gnugrep gzip less mosh psmisc tmux vim wget
+    curl gitAndTools.gitFull gnugrep gzip less mosh parted psmisc tmux vim wget
 
     # General
     discount gnumake gnupg gnused gnutar graphviz jq mercurial screen
