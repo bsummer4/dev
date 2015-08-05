@@ -74,3 +74,5 @@ function v {
 function vv { $EDITOR $(for n in $*; do git ls-files | grep "$n"; done | sort -u | uniq); }
 
 set -o vi
+
+source $HOME/.nix-profile/etc/profile.d/nix.sh
