@@ -3,3 +3,7 @@
 	email = ben@benjaminsummers.net
 [push]
 	default = matching
+[github]
+	user = bsummer4
+[ghi]
+	token = 71f132a422f708e765541bc8020bbd6deb40014f

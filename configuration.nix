@@ -9,7 +9,7 @@
 
   networking.hostId = "2bc28922";
   networking.firewall.allowedUDPPorts = [60001 60002 60003 60004 60005];
-  networking.firewall.allowedTCPPorts = [3000 8080];
+  networking.firewall.allowedTCPPorts = [3000 8080 27017];
 
   networking.firewall.allowPing = true;
 
@@ -18,6 +18,9 @@
     consoleKeyMap="us";
     defaultLocale="en_US.UTF-8";
   };
+
+  nix.trustedBinaryCaches = [ https://cache.nixos.org/ http://hydra.nixos.org/ http://hydra.cryp.to/ ];
+  nix.binaryCaches = [ "https://cache.nixos.org/" "http://hydra.nixos.org/" "http://hydra.cryp.to/" ];
 
   environment.systemPackages = with pkgs; [
     # Basics
