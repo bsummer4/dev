@@ -187,3 +187,7 @@ digraph O+ 8853
 
 " TODO Fix no syntax on commands like, nNe.
 autocmd BufEnter * call MyColors()
+
+set runtimepath^=~/.vim/bundle/ctrlp.vim
+
+set formatprg=stylish-haskell
