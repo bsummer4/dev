@@ -39,21 +39,21 @@ function MyColors()
   " Setup Colors
     set t_Co=256
     hi clear
-    hi TooLong guibg=DarkGray ctermbg=DarkGray
-    hi Tabs guibg=Black ctermbg=Black
-    hi Spaces guibg=DarkGray ctermbg=DarkGray
+    hi TooLong guibg=Yellow ctermbg=Yellow
+    hi Tabs guibg=Yellow ctermbg=Yellow
+    hi Spaces guibg=Yellow ctermbg=Yellow
     hi Junk guibg=Red ctermbg=Brown
     hi Punc guifg=Red ctermfg=Red cterm=bold gui=bold
-    hi Match guifg=Yellow ctermfg=Yellow cterm=bold gui=bold
-    hi Capital gui=bold cterm=bold ctermfg=LightGreen guifg=LightGreen
-    hi LineNr guifg=DarkGrey ctermfg=DarkGrey
+    hi Match guifg=Magenta ctermfg=Magenta cterm=bold gui=bold
+    hi Capital gui=bold cterm=bold ctermfg=Grey guifg=Grey
+    hi LineNr guifg=Grey ctermfg=Grey
     hi SpellBad ctermbg=Gray gui=italic
-    hi Normal ctermfg=Green guifg=white guibg=black
-    hi SignColumn ctermfg=Black ctermbg=Gray cterm=bold
-    hi GitGutterAdd ctermfg=Black ctermbg=Gray cterm=bold
-    hi GitGutterChange ctermfg=Black ctermbg=Gray cterm=bold
-    hi GitGutterDelete ctermfg=Black ctermbg=Gray cterm=bold
-    hi GitGutterChangeDelete ctermfg=Black ctermbg=Gray cterm=bold
+    hi Normal ctermfg=LightGreen guifg=LightGreen guibg=Yellow
+    hi SignColumn ctermfg=Yellow ctermbg=Yellow cterm=bold
+    hi GitGutterAdd ctermfg=Yellow ctermbg=Yellow cterm=bold
+    hi GitGutterChange ctermfg=Yellow ctermbg=Yellow cterm=bold
+    hi GitGutterDelete ctermfg=Yellow ctermbg=Yellow cterm=bold
+    hi GitGutterChangeDelete ctermfg=Yellow ctermbg=Yellow cterm=bold
     endfunction
 
 " Move by indent
@@ -189,5 +189,38 @@ digraph O+ 8853
 autocmd BufEnter * call MyColors()
 
 set runtimepath^=~/.vim/bundle/ctrlp.vim
+set runtimepath^=~/.vim/bundle/AutoSave.vim
 
 set formatprg=stylish-haskell
+
+set autowriteall
+let g:auto_save = 1
+let g:updatetime = 20
+
+noremap <Right>      :bnext<CR>
+imap    <Right> <Esc>:bnext<CR>
+noremap <Left>       :bprev<CR>
+imap    <Left>  <Esc>:bprev<CR>
+
+noremap <Down>      <C-o>
+imap    <Down> <Esc><C-o>
+noremap <Up>        <C-i>
+imap    <Up>   <Esc><C-i>
+
+noremap  <C-Space> <C-^>
+inoremap <C-Space> <Esc><C-^>
+noremap  <C-@>     <C-^>
+inoremap <C-@>     <Esc><C-^>
+
+noremap ZZ :bd<CR>
+
+imap    <Tab> <Esc>
+noremap <Tab> <Esc>
+
+nnoremap Q <nop>
+set ruler
+set nobackup
+set nowb
+set noswapfile
+set laststatus=2
+set cmdheight=1

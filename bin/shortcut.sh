@@ -1,7 +1,7 @@
 pager () { less -R -S $*; }
 
 case $0 in
-	*GL) git log --all --graph --decorate --oneline --simplify-by-decoration;;
+	*GL) git log --all --graph --decorate --oneline;; # --simplify-by-decoration;;
 	*SS) import -window root screenshot.jpg;;
 	*xc) xclip -selection c $*;;
 	*P) case $# in 0) pager;; 1) pager $1;; *) more $* | pager;; esac;;

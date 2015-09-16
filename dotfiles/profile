@@ -65,6 +65,21 @@ function l { git ls-files | sort -u | column; }
 function ll { git ls-files | sed 's|.*/||' | sort -u | column; }
 function s { (git ls-files; find . -type f) | grep "$1" | sed 1q; }
 function ss { for n in $*; do git ls-files | grep "$n"; done | sort -u | uniq; }
+
+function jr {
+  x=$(curl -X$1 -H 'Content-Type: application/json' -d "$3" $2)
+
+  echo "$x" | jq .
+  [ $? = 0 ] || echo "$x"
+}
+
+function GET { jr GET "$1" ""; }
+function POST { jr POST "$1" "$2"; }
+function PUT { jr PUT "$1" "$2"; }
+function DELETE { jr DELETE "$1" ""; }
+function LIST { jr LIST "$1" ""; }
+function PATCH { jr PATCH "$1" "$2"; }
+
 function v {
 	f=$(for name in $*; do
 		if [ -e "$name" ]; then echo $name; else s "$name"; fi
@@ -76,3 +91,13 @@ function vv { $EDITOR $(for n in $*; do git ls-files | grep "$n"; done | sort -u
 set -o vi
 
 source $HOME/.nix-profile/etc/profile.d/nix.sh
+
+envfile="$HOME/.gnupg/gpg-agent.env"
+if [[ -e "$envfile" ]] && kill -0 $(grep GPG_AGENT_INFO "$envfile" | cut -d: -f 2) 2>/dev/null; then
+    eval "$(cat "$envfile")"
+else
+    eval "$(gpg-agent --daemon --enable-ssh-support --write-env-file "$envfile")"
+fi
+export GPG_AGENT_INFO  # the env file does not contain the export statement
+export SSH_AUTH_SOCK   # enable gpg-agent for ssh
+export GPG_TTY=`tty`
