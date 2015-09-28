@@ -39,9 +39,9 @@ function MyColors()
   " Setup Colors
     set t_Co=256
     hi clear
-    hi TooLong guibg=Yellow ctermbg=Yellow
-    hi Tabs guibg=Yellow ctermbg=Yellow
-    hi Spaces guibg=Yellow ctermbg=Yellow
+    hi TooLong guibg=DarkGray ctermbg=DarkGray
+    hi Tabs guibg=Black ctermbg=Black
+    hi Spaces guibg=DarkGray ctermbg=DarkGray
     hi Junk guibg=Red ctermbg=Brown
     hi Punc guifg=Magenta ctermfg=Magenta cterm=bold gui=bold
     hi Match guifg=Yellow ctermfg=Yellow cterm=bold gui=bold
