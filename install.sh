@@ -6,7 +6,7 @@ for x in *
 do (cd ~; ln -f -s dev/dotfiles/$x .$x)
 done
 
-basics="curl gitAndTools.gitFull gnugrep gzip less mosh parted psmisc tmux vim wget"
-general="discount gnumake gnupg gnused gnutar graphviz jq mercurial screen silver-searcher w3m rlwrap openvpn"
+basics="vim wget"
+general="discount jq silver-searcher w3m rlwrap"
 
-nix-env -iA $(for pkg in $basics $general heroku; do echo nixpkgs.$pkg; done)
+# nix-env -iA $(for pkg in $basics $general; do echo nixpkgs.$pkg; done)
