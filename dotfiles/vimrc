@@ -15,7 +15,7 @@
   set more
   set noexpandtab
   set shiftwidth=2
-  set synmaxcol=100
+  set synmaxcol=200
   set textwidth=0
   set nowrap
   set wildignore+=*.pyc,*.so
@@ -29,7 +29,7 @@
 
 function MyColors()
   " Define Syntax Patterns
-  syn match TooLong '\%>80v.\+' containedin=ALL
+  syn match TooLong '\%>110v.\+' containedin=ALL
   syn match Tabs /\t/ containedin=ALL
   syn match Junk /\s*$/ containedin=ALL
   " syn match Spaces /^\t*\( *\)/ containedin=ALL
@@ -39,7 +39,6 @@ function MyColors()
   " Setup Colors
     set t_Co=256
     hi clear
-
     hi TooLong guibg=Yellow ctermbg=Yellow
     hi Tabs guibg=DarkGrey ctermbg=DarkGrey
     hi Spaces guibg=Yellow ctermbg=Yellow
@@ -50,11 +49,6 @@ function MyColors()
     hi LineNr guifg=Grey ctermfg=Grey
     hi SpellBad ctermbg=Gray gui=italic
     hi Normal ctermfg=LightGreen guifg=LightGreen guibg=Yellow
-    hi SignColumn ctermfg=Yellow ctermbg=Yellow cterm=bold
-    hi GitGutterAdd ctermfg=Yellow ctermbg=Yellow cterm=bold
-    hi GitGutterChange ctermfg=Yellow ctermbg=Yellow cterm=bold
-    hi GitGutterDelete ctermfg=Yellow ctermbg=Yellow cterm=bold
-    hi GitGutterChangeDelete ctermfg=Yellow ctermbg=Yellow cterm=bold
     endfunction
 
 " Move by indent
@@ -195,7 +189,7 @@ set runtimepath^=~/.vim/bundle/AutoSave.vim
 set formatprg=stylish-haskell
 
 set autowriteall
-let g:auto_save = 1
+let g:auto_save = 0
 let g:updatetime = 20
 
 noremap <Right>      :bnext<CR>
