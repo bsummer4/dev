@@ -1,0 +1,76 @@
+#!/usr/bin/env stack
+-- stack --resolver lts-3.11 --install-ghc runghc --package turtle --package basic-prelude --package flow -- -iscript
+
+{-# LANGUAGE OverloadedStrings, LambdaCase, UnicodeSyntax, NoImplicitPrelude, RecordWildCards #-}
+
+import ScriptPrelude
+
+import qualified Control.Foldl as F
+import qualified Data.Text     as T
+
+
+data Repo = Repo { ghService∷Text, ghUser∷Text, ghRepo∷Text }
+  deriving (Show)
+
+githubID ∷ Pattern Text
+githubID = do r ← plus (noneOf ":/@ ")
+              if ".git" `T.isSuffixOf` r
+                then mzero
+                else return r
+
+serviceHostname ∷ Pattern Text
+serviceHostname = plus (noneOf ":/@ ")
+
+fetchURLPat ∷ Pattern Text
+fetchURLPat = do { spaces1; "Fetch"; spaces1; "URL:"; spaces1 }
+
+mb p = p <|> ""
+
+githubSSHUrlParser ∷ Pattern Repo
+githubSSHUrlParser = do
+    fetchURLPat
+    let (srv,gid) = (serviceHostname, githubID)
+    let mAuth     = mb (githubID >> "@")
+    (s,u,r) ← (do             mAuth; s←srv; ":"; u←gid; "/"; r←gid; mb ".git"; return(s,u,r))
+          <|> (do "https://"; mAuth; s←srv; "/"; u←gid; "/"; r←gid; mb ".git"; return(s,u,r))
+          <|> (do "ssh://" ;  mAuth; s←srv; "/"; u←gid; "/"; r←gid; mb ".git"; return(s,u,r))
+    eof
+    return (Repo s u r)
+
+githubRepoUrlParser = githubSSHUrlParser
+
+githubOrigin ∷ FilePath → IO (Maybe Repo)
+githubOrigin fp = processMatches <| do
+    traceM "████████████████████████████████████████████████████████████████████████████████"
+    traceM ("PROCESSING: " <> pathStr fp)
+    cd fp
+    urlLine ← empty |> inshell "git remote show origin"
+                    |> grep (prefix fetchURLPat)
+    traceM ("++++" <> urlLine)
+    (select ⋘ match githubRepoUrlParser) urlLine
+  where
+    processMatches ms = fold ms F.list >>= \case
+        []        → do traceM ("Can't parse origin URL for: " <> pathStr fp)
+                       return Nothing
+        [x]       → do return (Just x)
+        all@(x:_) → do traceM ("Ambiguous URL for: " <> pathStr fp)
+                       traceM ("   Any of these matches would work: " <> show all)
+                       return (Just x)
+
+main = do
+    args    ← arguments
+    dropbox ← home |> fmap (</> "Dropbox")
+    view <| do
+        repoPathArg ← select args
+        repoPath    ← realpath (strPath repoPathArg)
+        mRepo       ← liftIO (githubOrigin repoPath)
+        Repo{..}    ← mRepo |> \case Just repo → select [repo]
+                                     Nothing   → select []
+        let moveTo  = dropbox </> strPath ghService </> strPath ghUser </> strPath ghRepo
+        mktree (parent moveTo)
+
+        preExisting ← (||) <$> testfile moveTo <*> testdir moveTo
+        if preExisting
+            then do traceM (pathStr moveTo <> " already exists!")
+            else do traceM ("Moving " <> pathStr repoPath <> " to " <> pathStr moveTo)
+                    mv repoPath moveTo

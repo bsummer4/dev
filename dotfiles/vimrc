@@ -34,7 +34,8 @@ function MyColors()
   syn match Junk /\s*$/ containedin=ALL
   " syn match Spaces /^\t*\( *\)/ containedin=ALL
   syn match Punc /[^a-zA-Z0-9]/
-  syn match Match /[[{(<«‹‘“';`"”’›»>)}\]]/
+  syn match HiPri /[‘“';`"”’]/
+  syn match Match /[[{(<«‹›»>)}\]]/
   syn match Capital /[A-Z]/ containedin=ALL
   " Setup Colors
     set t_Co=256
@@ -43,8 +44,9 @@ function MyColors()
     hi Tabs guibg=DarkGrey ctermbg=DarkGrey
     hi Spaces guibg=Yellow ctermbg=Yellow
     hi Junk guibg=Red ctermbg=Brown
-    hi Punc guifg=Red ctermfg=Red cterm=bold gui=bold
+    hi Punc guifg=9 ctermfg=9
     hi Match guifg=Magenta ctermfg=Magenta cterm=bold gui=bold
+    hi HiPri guifg=Yellow ctermfg=Yellow cterm=bold gui=bold
     hi Capital ctermfg=LightGrey guifg=LightGrey
     hi LineNr guifg=Grey ctermfg=Grey
     hi SpellBad ctermbg=Gray gui=italic
