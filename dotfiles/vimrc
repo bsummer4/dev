@@ -34,7 +34,7 @@ function MyColors()
   syn match Junk /\s*$/ containedin=ALL
   " syn match Spaces /^\t*\( *\)/ containedin=ALL
   syn match Punc /[^a-zA-Z0-9]/
-  syn match Match /[[{(<«‹‘“';"”’›»>)}\]]/
+  syn match Match /[[{(<«‹‘“';`"”’›»>)}\]]/
   syn match Capital /[A-Z]/ containedin=ALL
   " Setup Colors
     set t_Co=256
@@ -189,7 +189,7 @@ set runtimepath^=~/.vim/bundle/AutoSave.vim
 set formatprg=stylish-haskell
 
 set autowriteall
-let g:auto_save = 0
+let g:auto_save = 1
 let g:updatetime = 20
 
 noremap <Right>      :bnext<CR>
@@ -221,3 +221,6 @@ set undofile                " Save undo's after file closes
 set undodir=$HOME/.vim/undo " where to save undo histories
 set undolevels=1000         " How many undos
 set undoreload=10000        " number of lines to save for undo
+set viminfo='99,\"9999,:999,%,n~/.viminfo
+au BufWinLeave * mkview
+au BufWinEnter * silent loadview
