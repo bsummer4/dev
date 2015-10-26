@@ -1,0 +1,16 @@
+#!/usr/bin/env stack
+-- stack --resolver lts-3.11 --install-ghc runghc --package turtle --package basic-prelude --package flow -- -iscript
+
+{-# LANGUAGE OverloadedStrings, LambdaCase, UnicodeSyntax, NoImplicitPrelude #-}
+
+import ScriptPrelude
+import Relocate (relocate)
+
+main = sh <| do
+    repoURL ← arguments >>= select
+    tmproot ← (</> ".tmp/") <$> home
+    mktree tmproot
+    tmpdir ← using (mktempdir tmproot "clone-repo-script")
+    rmdir tmpdir
+    empty |> inproc "git" ["clone", repoURL, pathStr tmpdir]
+    relocate tmpdir
