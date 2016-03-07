@@ -58,9 +58,11 @@ githubOrigin fp = processMatches <| do
 
 relocate ∷ FilePath → Shell ()
 relocate repoPathArg = do
+    traceM ("relocating " <> pathStr repoPathArg)
     dropbox  ← (</> "Dropbox") <$> home
     repoPath ← realpath repoPathArg
-    Repo{..} ← select . maybeToList =<< githubOrigin repoPath
+    r@Repo{..} ← select . maybeToList =<< githubOrigin repoPath
+    traceM ("Identified this as " <> show r)
     let moveTo = dropbox </> strPath ghService </> strPath ghUser </> strPath ghRepo
 
     preExisting ← (||) <$> testfile moveTo <*> testdir moveTo

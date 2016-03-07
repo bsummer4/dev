@@ -84,9 +84,14 @@ function v {
 	f=$(for name in $*; do
 		if [ -e "$name" ]; then echo $name; else s "$name"; fi
 		done);
-	(cd $(dirname $f); $EDITOR $(basename $f) && touch $(basename f)); }
+	(cd $(dirname $f); $EDITOR $(basename $f) && touch $(basename f))
+}
 
-function vv { $EDITOR $(for n in $*; do git ls-files | grep "$n"; done | sort -u | uniq); }
+function vv {
+    $EDITOR $(for n in $*; do git ls-files |grep "$n"; done |
+                  sort -u |
+                  uniq)
+}
 
 set -o vi
 
@@ -101,7 +106,22 @@ PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
 
-export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
+nvm () {
+    export NVM_DIR=~/.nvm
+    source $(brew --prefix nvm)/nvm.sh
+}
 
 alias gf='git ls-files'
+
+function repo () {
+    case $# in
+      0) cd "$HOME/Dropbox/github.com/bsummer4";;
+      1) cd "$HOME/Dropbox/github.com/bsummer4/$1";;
+      2) cd "$HOME/Dropbox/github.com/$1/$2";;
+      3) cd "$HOME/Dropbox/$1/$2/$3";;
+    esac
+}
+
+export PATH=$HOME/.local/bin:$PATH
+alias gs='git status'
+alias gitup='git push origin'

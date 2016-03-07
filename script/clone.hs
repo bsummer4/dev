@@ -1,5 +1,5 @@
 #!/usr/bin/env stack
--- stack --resolver lts-3.11 --install-ghc runghc --package turtle --package basic-prelude --package flow -- -iscript
+-- stack --resolver lts-3.11 --install-ghc ghc --package turtle --package basic-prelude --package flow
 
 {-# LANGUAGE OverloadedStrings, LambdaCase, UnicodeSyntax, NoImplicitPrelude #-}
 
@@ -12,5 +12,9 @@ main = sh <| do
     mktree tmproot
     tmpdir ← using (mktempdir tmproot "clone-repo-script")
     rmdir tmpdir
-    empty |> inproc "git" ["clone", repoURL, pathStr tmpdir]
+    traceM "Time to clone!"
+    liftIO <| sh <| do
+        empty |> proc "git" ["clone", repoURL, pathStr tmpdir]
+    traceM "Did!"
     relocate tmpdir
+    traceM "Relocated!"

@@ -1,5 +1,5 @@
 #!/usr/bin/env stack
--- stack --resolver lts-3.11 --install-ghc runghc --package turtle --package basic-prelude --package flow -- -iscript
+-- stack --resolver lts-3.11 --install-ghc ghc --package turtle --package basic-prelude --package flow -- -iscript
 
 {-# LANGUAGE OverloadedStrings, LambdaCase, UnicodeSyntax, NoImplicitPrelude #-}
 

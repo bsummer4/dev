@@ -1,12 +1,8 @@
-:set -XOverloadedLists
-:set -XOverloadedStrings
 :set -XUnicodeSyntax
+
+import           Data.Function (const, ($), (.))
+import           Data.List     ((++))
+
 :set prompt "%s λ."
 :def hlint const . return $ ":! hlint \"src\""
 :def hoogle \s -> return $ ":! hoogle --count=15 \"" ++ s ++ "\""
-
-import Prelude as Prelude
-import Data.Monoid
-import Control.Applicative
-import Control.Arrow
-import Control.Monad
