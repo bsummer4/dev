@@ -101,7 +101,90 @@ PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 PATH="/usr/local/opt/gnu-tar/libexec/gnubin:$PATH"
 
+# nvm etc
 export NVM_DIR=~/.nvm
-source $(brew --prefix nvm)/nvm.sh
+nvm_init() {
+  source $(brew --prefix nvm)/nvm.sh
+  nvm use v5.7.0
+}
 
 alias gf='git ls-files'
+alias gs='git status'
+alias gc='git checkout'
+
+hdr () {
+    word="$1"
+    chars=${#word}
+    remain=$((108 - words))
+    prechars=$((remain/2))
+    postchars=$((remain-(prechars+chars)))
+    for i in $(seq $prechars); do echo -n '█'; done
+    echo -n '' $word ''
+    for i in $(seq $postchars); do echo -n '█'; done
+    echo
+}
+
+
+alias app='cd ~/wagon/app; hdr app; git status; hdr app;'
+alias wrapper='cd ~/wagon/atom-wrapper; hdr atom-wrapper; git status; hdr atom-wrapper;'
+alias client='cd ~/wagon/client; hdr client; git status; hdr client;'
+alias common='cd ~/wagon/common; hdr common; git status; hdr common;'
+alias etl='cd ~/wagon/etl; hdr etl; git status; hdr etl;'
+alias images='cd ~/wagon/images; hdr images; git status; hdr images;'
+alias server='cd ~/wagon/server; hdr server; git status; hdr server;'
+alias util='cd ~/wagon/util; hdr util; git status; hdr util;'
+alias wagon='cd ~/wagon; hdr wagon; git status; hdr wagon;'
+
+function gitup () {
+  if [ "$#" = 0 ]
+  then curbr="$(git rev-parse --abbrev-ref HEAD)"
+       echo "Current branch is $curbr. Confirm!"
+       if [ -n "$curbr" ] && read
+       then git push -u origin "$curbr" "$@"
+       else echo 'Backing out!'
+       fi
+  fi
+}
+
+function W () {
+  pushd ~/wagon
+  cmd="$1"
+  shift
+  "./scripts/$cmd" "$@"
+  popd
+}
+
+function G () {
+  pushd ~/wagon
+  ./scripts/multi git "$@"
+  popd
+}
+
+notesfile=~/Desktop/NOTES
+
+function note () {
+  if [ "$#" = 0 ]
+  then note $(pbpaste | head -n 1)
+  else echo "$@" >> "$notesfile"
+  fi
+}
+
+function notes () {
+  test -e "$notesfile" && cat "$notesfile"
+}
+
+alias N=note
+
+alias vim=$(which vi)
+alias vi=$(which vi)
+alias IDE="$(which vim); while sleep 0.2; do $(which vim); done"
+
+export PATH="$HOME/.local/bin:$PATH"
+
+eval $(ssh-agent)
+
+if [ -e /Users/benjamin/.nix-profile/etc/profile.d/nix.sh ]; then
+  . /Users/benjamin/.nix-profile/etc/profile.d/nix.sh
+fi
+
+alias flow=./node_modules/.bin/flow

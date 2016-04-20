@@ -15,7 +15,7 @@
   set more
   set noexpandtab
   set shiftwidth=2
-  set synmaxcol=200
+  set synmaxcol=400
   set textwidth=0
   set nowrap
   set wildignore+=*.pyc,*.so
@@ -26,6 +26,7 @@
   let g:gitgutter_highlight_lines = 0
   let g:gitgutter_sign_column_always = 1
   set backspace=eol,start
+  set exrc
 
 function MyColors()
   " Define Syntax Patterns
@@ -34,7 +35,8 @@ function MyColors()
   syn match Junk /\s*$/ containedin=ALL
   " syn match Spaces /^\t*\( *\)/ containedin=ALL
   syn match Punc /[^a-zA-Z0-9]/
-  syn match Match /[[{(<«‹‘“';"”’›»>)}\]]/
+  syn match Match /[[{(<«‹;›»>)}\]]/
+  syn match Quotes /[‘“'"”’]/
   syn match Capital /[A-Z]/ containedin=ALL
   " Setup Colors
     set t_Co=256
@@ -45,6 +47,7 @@ function MyColors()
     hi Junk guibg=Red ctermbg=Brown
     hi Punc guifg=Red ctermfg=Red cterm=bold gui=bold
     hi Match guifg=Magenta ctermfg=Magenta cterm=bold gui=bold
+    hi Quotes guifg=Yellow ctermfg=Yellow ctermbg=Black cterm=bold gui=bold
     hi Capital ctermfg=LightGrey guifg=LightGrey
     hi LineNr guifg=Grey ctermfg=Grey
     hi SpellBad ctermbg=Gray gui=italic
@@ -221,3 +224,39 @@ set undofile                " Save undo's after file closes
 set undodir=$HOME/.vim/undo " where to save undo histories
 set undolevels=1000         " How many undos
 set undoreload=10000        " number of lines to save for undo
+
+function IDE()
+    cabbrev q    <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'close' : 'q')<CR>
+    cabbrev wq   <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'close' : 'q')<CR>
+    cabbrev cq   <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'close' : 'q')<CR>
+    cabbrev q!   <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'close' : 'q')<CR>
+    cabbrev quit <c-r>=(getcmdtype()==':' && getcmdpos()==1 ? 'close' : 'q')<CR>
+    endfunction
+
+
+"" Wipe Lines """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+function WipeLine()
+  :let m=getmatches()
+  :silent execute "normal! d$"
+  :s/./ /g
+  :call setmatches(m)
+  endfunction
+
+function VisualDown()
+  :let l:view=winsaveview()
+  :execute "normal! yyp"
+  :call winrestview(l:view)
+  :execute "normal! j"
+  :call WipeLine()
+  :execute "normal! A "
+  :undojoin
+  :startinsert
+  endfunction
+
+" noremap <C-W> :call VisualDown()<CR>
+command IDE call IDE()
+noremap <C-M> :CtrlPMRUFiles<CR>
+noremap <C-P> :CtrlPClearCache<CR>:CtrlP<CR>
+
+let g:ctrlp_user_command = ['./scripts/ls-files', './scripts/ls-files %s', 'find %s -type f']

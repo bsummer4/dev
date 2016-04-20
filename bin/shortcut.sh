@@ -1,20 +1,25 @@
 pager () { less -R -S; }
 
 printfiles () {
-    for x in $*
-    do echo '################################################################################'
-       echo "#### $x ####"
-       echo '################################################################################'
-       cat $x
-       echo
-    done
+    if [ "$#" -eq 0 ]
+    then cat
+    else for x in "$@"
+         do echo '################################################################################'
+            echo "#### $x ####"
+            echo '################################################################################'
+            cat $x
+            echo
+         done
+    fi
 }
 
 case $0 in
 	*GL) git log --graph --abbrev-commit --pretty=oneline --decorate;;
+	*gl) git log --graph --abbrev-commit --pretty=oneline --decorate;;
 	*SS) import -window root screenshot.jpg;;
 	*xc) xclip -selection c $*;;
 	*P) printfiles $* | pager;;
+	*p) pwd;;
 	*L) ls -F | column;;
 	*r) at-git-root $*;;
 	*E) $EDITOR $*;;

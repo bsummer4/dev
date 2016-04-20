@@ -6,4 +6,15 @@
 [github]
 	user = bsummer4
 [ghi]
-	token = 71f132a422f708e765541bc8020bbd6deb40014f
+	token = !security find-internet-password -a bsummer4 -s github.com -l 'ghi token' -w
+[core]
+	excludesfile = /Users/benjamin/.gitignore_global
+[alias]
+	co = checkout
+	ci = commit
+	st = status
+	br = branch
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
