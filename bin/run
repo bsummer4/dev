@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+scriptdir="$HOME/dev/script"
+cmd="$1"; shift
+
+srcfile="$scriptdir/$cmd.hs"
+binfile="$scriptdir/$cmd"
+
+if [ ! -e "$binfile" ] || [ "$srcfile" -nt "$binfile" ]
+then (cd "$scriptdir"; "./$cmd.hs")
+fi
+
+"$binfile" "$@"

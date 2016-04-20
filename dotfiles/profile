@@ -84,9 +84,14 @@ function v {
 	f=$(for name in $*; do
 		if [ -e "$name" ]; then echo $name; else s "$name"; fi
 		done);
-	(cd $(dirname $f); $EDITOR $(basename $f) && touch $(basename f)); }
+	(cd $(dirname $f); $EDITOR $(basename $f) && touch $(basename f))
+}
 
-function vv { $EDITOR $(for n in $*; do git ls-files | grep "$n"; done | sort -u | uniq); }
+function vv {
+    $EDITOR $(for n in $*; do git ls-files |grep "$n"; done |
+                  sort -u |
+                  uniq)
+}
 
 set -o vi
 
@@ -111,6 +116,7 @@ nvm_init() {
 alias gf='git ls-files'
 alias gs='git status'
 alias gc='git checkout'
+alias gitup='git push origin'
 
 hdr () {
     word="$1"
@@ -188,3 +194,14 @@ if [ -e /Users/benjamin/.nix-profile/etc/profile.d/nix.sh ]; then
 fi
 
 alias flow=./node_modules/.bin/flow
+
+function repo () {
+    case $# in
+      0) cd "$HOME/Dropbox/github.com/bsummer4";;
+      1) cd "$HOME/Dropbox/github.com/bsummer4/$1";;
+      2) cd "$HOME/Dropbox/github.com/$1/$2";;
+      3) cd "$HOME/Dropbox/$1/$2/$3";;
+    esac
+}
+
+export PATH=$HOME/.local/bin:$PATH

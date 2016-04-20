@@ -1,1 +1,8 @@
 result
+**/*.o
+**/*.hi
+script/script
+script/install
+script/relocate_repo
+script/blobstash
+dotfiles/vim/view/

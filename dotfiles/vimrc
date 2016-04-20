@@ -35,8 +35,8 @@ function MyColors()
   syn match Junk /\s*$/ containedin=ALL
   " syn match Spaces /^\t*\( *\)/ containedin=ALL
   syn match Punc /[^a-zA-Z0-9]/
-  syn match Match /[[{(<«‹;›»>)}\]]/
-  syn match Quotes /[‘“'"”’]/
+  syn match HiPri /[‘“';`"”’]/
+  syn match Match /[[{(<«‹›»>)}\]]/
   syn match Capital /[A-Z]/ containedin=ALL
   " Setup Colors
     set t_Co=256
@@ -45,9 +45,9 @@ function MyColors()
     hi Tabs guibg=DarkGrey ctermbg=DarkGrey
     hi Spaces guibg=Yellow ctermbg=Yellow
     hi Junk guibg=Red ctermbg=Brown
-    hi Punc guifg=Red ctermfg=Red cterm=bold gui=bold
+    hi Punc guifg=9 ctermfg=9
     hi Match guifg=Magenta ctermfg=Magenta cterm=bold gui=bold
-    hi Quotes guifg=Yellow ctermfg=Yellow ctermbg=Black cterm=bold gui=bold
+    hi HiPri guifg=Yellow ctermfg=Yellow cterm=bold gui=bold
     hi Capital ctermfg=LightGrey guifg=LightGrey
     hi LineNr guifg=Grey ctermfg=Grey
     hi SpellBad ctermbg=Gray gui=italic
@@ -167,8 +167,8 @@ function MyColors()
   autocmd BufWritePost * :call TabFacadePostWriteHook()
 
 " Custom Digraphs
-digraph >> 8921
-digraph << 8920
+digraph >> 9655
+digraph << 9665
 digraph O+ 8853
 
 " Remap keys
@@ -192,7 +192,7 @@ set runtimepath^=~/.vim/bundle/AutoSave.vim
 set formatprg=stylish-haskell
 
 set autowriteall
-let g:auto_save = 0
+let g:auto_save = 1
 let g:updatetime = 20
 
 noremap <Right>      :bnext<CR>
@@ -260,3 +260,9 @@ noremap <C-M> :CtrlPMRUFiles<CR>
 noremap <C-P> :CtrlPClearCache<CR>:CtrlP<CR>
 
 let g:ctrlp_user_command = ['./scripts/ls-files', './scripts/ls-files %s', 'find %s -type f']
+
+set viminfo='99,\"9999,:999,%,n~/.viminfo
+au BufWinLeave * mkview
+au BufWinEnter * silent loadview
+
+let g:netrw_liststyle=3
