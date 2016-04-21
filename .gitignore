@@ -6,3 +6,4 @@ script/install
 script/relocate_repo
 script/blobstash
 dotfiles/vim/view/
+.stack-work

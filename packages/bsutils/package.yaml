@@ -1,0 +1,74 @@
+name: bsutils
+version: 0.1.0.0
+synopsis: Miscellaneous Utilities
+license: AllRightsReserved
+author: Benjamin Summers
+maintainer: ben@benjaminsummers.net
+copyright: 2016 Benjamin Summers
+category: Development
+
+ghc-options: -threaded -rtsopts -with-rtsopts=-N
+
+
+library:
+  source-dirs: src
+  exposed-modules:
+    - Lib
+    - Relocate
+    - ScriptPrelude
+
+executables:
+  bsrelocate_repo:
+    source-dirs: app
+    main: relocate_repo.hs
+    dependencies: bsutils
+
+  bsinstall:
+    source-dirs: app
+    main: install.hs
+    dependencies: bsutils
+
+  bsclone:
+    source-dirs: app
+    main: clone.hs
+    dependencies: bsutils
+
+  bsblobstash:
+    source-dirs: app
+    main: blobstash.hs
+    dependencies: bsutils
+
+dependencies:
+  - base
+  - turtle
+  - basic-prelude
+  - flow
+  - foldl
+  - text
+  - system-filepath
+
+default-extensions:
+  - BangPatterns
+  - ConstraintKinds
+  - DeriveGeneric
+  - ExistentialQuantification
+  - FlexibleContexts
+  - FlexibleInstances
+  - FunctionalDependencies
+  - GADTs
+  - GeneralizedNewtypeDeriving
+  - KindSignatures
+  - LambdaCase
+  - MultiParamTypeClasses
+  - MultiWayIf
+  - NamedFieldPuns
+  - OverloadedStrings
+  - PolyKinds
+  - RecordWildCards
+  - ScopedTypeVariables
+  - StandaloneDeriving
+  - TupleSections
+  - TypeFamilies
+  - TypeSynonymInstances
+  - UnicodeSyntax
+  - ViewPatterns

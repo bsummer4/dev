@@ -1,5 +1,5 @@
 #!/usr/bin/env stack
--- stack --resolver lts-3.11 --install-ghc ghc --package turtle --package basic-prelude --package flow
+-- stack --install-ghc build --resolver lts-3.11 --package turtle --package basic-prelude --package flow
 
 {-# LANGUAGE OverloadedStrings, LambdaCase, UnicodeSyntax, NoImplicitPrelude #-}
 
@@ -10,6 +10,7 @@ main = sh <| do
     repoURL ← arguments >>= select
     tmproot ← (</> ".tmp/") <$> home
     mktree tmproot
+    liftIO (print tmproot)
     tmpdir ← using (mktempdir tmproot "clone-repo-script")
     rmdir tmpdir
     traceM "Time to clone!"
