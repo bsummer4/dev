@@ -5,21 +5,21 @@
   set guioptions-=T
   set ts=2
   filetype off
-  filetype plugin indent off
-  set background=dark
-  set fileformat=unix
-  set history=1
-  set hls
-  set is
+  filetype plugin off
+  filetype indent off
   set modeline
+  set hlsearch
   set more
   set noexpandtab
   set shiftwidth=2
-  set synmaxcol=400
+  set synmaxcol=120
   set textwidth=0
   set nowrap
   set wildignore+=*.pyc,*.so
+  setlocal cpoptions+=M
   let g:ctrlp_working_path_mode = 0
+  let g:flow#autoclose = 1
+  let g:flow#enable = 0
   let g:gitgutter_enabled = 1
   let g:gitgutter_realtime = 0
   let g:gitgutter_eager = 0
@@ -27,6 +27,7 @@
   let g:gitgutter_sign_column_always = 1
   set backspace=eol,start
   set exrc
+  set backupcopy=yes
 
 function MyColors()
   " Define Syntax Patterns
@@ -188,12 +189,17 @@ autocmd BufEnter * call MyColors()
 
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 set runtimepath^=~/.vim/bundle/AutoSave.vim
+set runtimepath^=~/.vim/bundle/vim-flow
+set runtimepath^=~/.vim/bundle/tern_for_vim
+set runtimepath^=~/.vim/bundle/nerdtree
 
 set formatprg=stylish-haskell
 
-set autowriteall
-let g:auto_save = 1
-let g:updatetime = 20
+set autowriteall " Save whenever we leave a buffer.
+
+" Save after each edit.
+" let g:auto_save = 1
+" let g:auto_save_in_insert_mode = 0
 
 noremap <Right>      :bnext<CR>
 imap    <Right> <Esc>:bnext<CR>
@@ -213,6 +219,11 @@ inoremap <C-@>     <Esc><C-^>
 noremap ZZ :bd<CR>
 
 nnoremap Q <nop>
+
+nnoremap <Leader>t :FlowType<CR>
+nnoremap <Leader>b :FlowMake<CR>
+nnoremap <Leader>f :FlowToggle<CR>
+
 set ruler
 set nobackup
 set nowb
@@ -258,11 +269,12 @@ function VisualDown()
 command IDE call IDE()
 noremap <C-M> :CtrlPMRUFiles<CR>
 noremap <C-P> :CtrlPClearCache<CR>:CtrlP<CR>
+noremap <C-Y> :CtrlPTag<CR>
 
 let g:ctrlp_user_command = ['./scripts/ls-files', './scripts/ls-files %s', 'find %s -type f']
 
 set viminfo='99,\"9999,:999,%,n~/.viminfo
-au BufWinLeave * mkview
-au BufWinEnter * silent loadview
+au BufWinLeave *.* mkview
+au BufWinEnter *.* silent loadview
 
 let g:netrw_liststyle=3

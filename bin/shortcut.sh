@@ -14,8 +14,8 @@ printfiles () {
 }
 
 case $0 in
-	*GL) git log --graph --abbrev-commit --pretty=oneline --decorate;;
-	*gl) git log --graph --abbrev-commit --pretty=oneline --decorate;;
+	*GL) git log --graph --abbrev-commit --pretty=oneline --decorate "$@";;
+	*gl) git log --graph --abbrev-commit --pretty=oneline --decorate "$@";;
 	*SS) import -window root screenshot.jpg;;
 	*xc) xclip -selection c $*;;
 	*P) printfiles $* | pager;;
@@ -25,8 +25,8 @@ case $0 in
 	*E) $EDITOR $*;;
 	*EE) $EDITOR $*;;
 	*A) ag $* --pager P;;
-	*f) gfmt -w81 | sed 's/\.   */\. /';;
-	*order) gfmt -w1 | sort $* | gfmt -w81;;
+	*f) gfmt -w110 | sed 's/\.   */\. /';;
+	*order) gfmt -w1 | sort $* | gfmt -w110;;
 	*summarize) P $(gwc -l $* | gsort -n | gsed 's/.*[0-9] //' | ghead -n-1);;
 	*) echo wat $0 $*;;
 	esac

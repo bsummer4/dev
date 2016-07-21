@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+cmd=$1
+
+function fail {
+  echo "$@" >/dev/stderr
+  exit 1
+}
+
+shift
+
+function browse {
+  open "$1"
+}
+
+function wagonrepo {
+  browse "https://github.com/wagonhq/$1/pulls"
+}
+
+function gdoc {
+  browse "https://docs.google.com/document/d/$1/edit#"
+}
+
+case "$cmd" in
+  client)  wagonrepo client;;
+  common)  wagonrepo common;;
+  server)  wagonrepo server;;
+  wagon)   wagonrepo wagon;;
+  wrapper) wagonrepo atom-wrapper;;
+
+  beach)   gdoc 1ZplD1jKuJPUo9sFk0DH9g8rHi2PYz_oubkZ42zwqyo8;;
+  bugs)    gdoc 1Q-lRf5qhcseKOTCLo3vX-6r2L6sGaM_usZXSJFgZoqo;;
+  debt)    gdoc 1A0F0QqzkZqNYGgSCeEb_MsjXMRHtKCx38VsSswNJOIw;;
+  ops)     gdoc 1Fhrjq103jjbcoa98pNp6iVibPSReCRVg0YNNFm1NdaM;;
+  plan)    gdoc 1Aeicn7Oam-ohrizYRVjbprQ1_4O7FamIHJKZm7aCT3I;;
+  stories) gdoc 15NA8Aiz0y5nVBvJxs6E8A6e6DNp3ZoTais3Ob36hb24;;
+  dev)     gdoc 19lbLnwckAq0HOezS9uIKN24IAKb-vihl_Q7JoD-x8HI;;
+  release) gdoc 1cMX3x6As257pS7MPqus1PoqcXfzbVu7wxH4SMMecB0s;;
+
+  h)       browse "https://hackage.haskell.org/package/$1";;
+  p)       STACK_YAML=$HOME/wagon/stack.yaml stack haddock --open "$1";;
+
+
+  *)       fail "Unknown command: $0 $cmd $@";;
+esac

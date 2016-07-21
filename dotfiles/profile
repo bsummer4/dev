@@ -95,7 +95,11 @@ function vv {
 
 set -o vi
 
-source $HOME/.nix-profile/etc/profile.d/nix.sh
+function nixos {
+  source $HOME/.nix-profile/etc/profile.d/nix.sh
+}
+
+nixos
 export PATH=/usr/local/ghc/bin:$PATH
 export PATH=/usr/local/bin:$PATH
 
@@ -116,7 +120,6 @@ nvm_init() {
 alias gf='git ls-files'
 alias gs='git status'
 alias gc='git checkout'
-alias gitup='git push origin'
 
 hdr () {
     word="$1"
@@ -142,14 +145,9 @@ alias util='cd ~/wagon/util; hdr util; git status; hdr util;'
 alias wagon='cd ~/wagon; hdr wagon; git status; hdr wagon;'
 
 function gitup () {
-  if [ "$#" = 0 ]
-  then curbr="$(git rev-parse --abbrev-ref HEAD)"
-       echo "Current branch is $curbr. Confirm!"
-       if [ -n "$curbr" ] && read
-       then git push -u origin "$curbr" "$@"
-       else echo 'Backing out!'
-       fi
-  fi
+  curbr="$(git rev-parse --abbrev-ref HEAD)"
+  echo git push -u origin "$curbr" "$@"
+  git push -u origin "$curbr" "$@"
 }
 
 function W () {
@@ -195,6 +193,18 @@ fi
 
 alias flow=./node_modules/.bin/flow
 
+function forever () {
+    echo RUNNING "$@"
+    "$@"
+    echo DONE
+    while read
+    do
+        echo RUNNING "$@"
+        "$@"
+        echo DONE
+    done
+}
+
 function repo () {
     case $# in
       0) cd "$HOME/Dropbox/github.com/bsummer4";;
@@ -205,3 +215,11 @@ function repo () {
 }
 
 export PATH=$HOME/.local/bin:$PATH
+# sysctl -w kern.maxfiles=20480 kern.maxfilesperproc=24576
+# ulimit -S -n 2048
+
+export STACK_YAML=$HOME/wagon/stack.yaml
+alias ga='git add'
+alias gu=gitup
+alias gp='git pull'
+alias S='TASTY_QUICKCHECK_TESTS=1 stack test --fast --file-watch'
